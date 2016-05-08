@@ -2,16 +2,6 @@ from distutils.command.build import build as DistutilsBuild
 from setuptools import setup, Extension
 import subprocess
 
-class FakeNumpy(object):
-  def get_include(self):
-    raise Exception('Tried to compile doom-py, but numpy is not installed. HINT: Please install numpy separately before attempting this -- `pip install numpy` should do it.')
-
-try:
-  import numpy
-except Exception as e:
-  print('Failed to load numpy: {}. Numpy must be already installed to normally set up doom-py. Trying to actually build doom-py will result in an error.'.format(e))
-  numpy = FakeNumpy()
-
 # For building Doom
 class BuildDoom(DistutilsBuild):
     def run(self):
