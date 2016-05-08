@@ -1,3 +1,4 @@
+import multiprocessing
 import os
 import sys
 import subprocess
@@ -11,8 +12,10 @@ def build_common(dynamic_library_extension):
     python_library = os.path.join(sysconfig.get_config_var('LIBPL'), 'libpython{}.{}'.format(sysconfig.get_python_version(), dynamic_library_extension))
     assert os.path.exists(python_library), "Incorrectly inferred your Python dynamic library would be at {}. This indicates a bug in doom-py and should be reported.".format(python_library)
 
+    cores_to_use = max(1, multiprocessing.cpu_count() - 1)
+
     subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_PYTHON=ON', '-DBUILD_JAVA=OFF', '-DPYTHON_INCLUDE_DIR={}'.format(python_include), '-DPYTHON_LIBRARY={}'.format(python_library)], cwd='doom_py')
-    subprocess.check_call(['make'], cwd='doom_py')
+    subprocess.check_call(['make', '-j', str(cores_to_use)], cwd='doom_py')
     subprocess.check_call(['rm', '-f', 'vizdoom.so'], cwd='doom_py')
     subprocess.check_call(['ln', '-s', 'bin/python/vizdoom.so', 'vizdoom.so'], cwd='doom_py')
 
@@ -51,7 +54,7 @@ class BuildDoom(DistutilsBuild):
         DistutilsBuild.run(self)
 
 setup(name='doom-py',
-      version='0.0.3',
+      version='0.0.4',
       description='Python bindings to ViZDoom',
       url='https://github.com/openai/doom-py',
       author='OpenAI Community',
