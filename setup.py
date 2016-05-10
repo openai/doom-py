@@ -4,8 +4,8 @@ import sys
 import subprocess
 
 from distutils import sysconfig
-from distutils.command.build import build as DistutilsBuild
-from setuptools import setup, Extension
+from distutils.command.build_ext import build_ext as DistutilsBuild
+from setuptools import setup
 
 def build_common(dynamic_library_extension):
     python_include = sysconfig.get_python_inc()
@@ -49,7 +49,14 @@ class BuildDoom(DistutilsBuild):
         try:
             build_func()
         except subprocess.CalledProcessError as e:
-            print("Could not build doom-py: %s" % e)
+            if platname == 'osx':
+                library_str = "doom_py requires boost and boost-python on OSX (installable via 'brew install boost boost-python')"
+            elif platname == 'linux':
+                library_str = "Try running 'apt-get install -y python-numpy cmake zlib1g-dev libjpeg-dev libboost-all-dev gcc libsdl2-dev wget unzip'"
+            else:
+                library_str = ''
+
+            sys.stderr.write("\033[1m" + "\nCould not build doom-py: %s. (HINT: are you sure cmake is installed? You might also be missing a library. %s\n\n" % (e, library_str) + "\033[0m")
             raise
         DistutilsBuild.run(self)
 
@@ -60,7 +67,7 @@ setup(name='doom-py',
       author='OpenAI Community',
       author_email='gym@openai.com',
       packages=['doom_py'],
-      cmdclass={'build': BuildDoom},
+      cmdclass={'build_ext': BuildDoom},
       setup_requires=['numpy'],
       install_requires=['numpy'],
       tests_require=['nose2'],
