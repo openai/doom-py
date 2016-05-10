@@ -18,7 +18,6 @@ def build_common(dynamic_library_extension):
     subprocess.check_call(['make', '-j', str(cores_to_use)], cwd='doom_py')
     subprocess.check_call(['rm', '-f', 'vizdoom.so'], cwd='doom_py')
     subprocess.check_call(['ln', '-s', 'bin/python/vizdoom.so', 'vizdoom.so'], cwd='doom_py')
-    print "all done with so, check: ", python_include, python_library
 
 def build_osx():
     build_common('dylib')
