@@ -18,6 +18,7 @@ def build_common(dynamic_library_extension):
     subprocess.check_call(['make', '-j', str(cores_to_use)], cwd='doom_py')
     subprocess.check_call(['rm', '-f', 'vizdoom.so'], cwd='doom_py')
     subprocess.check_call(['ln', '-s', 'bin/python/vizdoom.so', 'vizdoom.so'], cwd='doom_py')
+    print "all done with so, check: ", python_include, python_library
 
 def build_osx():
     build_common('dylib')
@@ -49,7 +50,14 @@ class BuildDoom(DistutilsBuild):
         try:
             build_func()
         except subprocess.CalledProcessError as e:
-            print("Could not build doom-py: %s" % e)
+            if platname == 'osx':
+                library_str = "doom_py requires boost and boost-python on OSX (installable via 'brew install boost boost-python')"
+            elif platname == 'linux':
+                library_str = "Try running 'apt-get install -y python-numpy cmake zlib1g-dev libjpeg-dev libboost-all-dev gcc libsdl2-dev wget unzip'"
+            else:
+                library_str = ''
+
+            sys.stderr.write("\033[1m" + "\nCould not build doom-py: %s. (HINT: are you sure cmake is installed? You might also be missing a library. %s\n\n" % (e, library_str) + "\033[0m")
             raise
         DistutilsBuild.run(self)
 
