@@ -4,8 +4,8 @@ import sys
 import subprocess
 
 from distutils import sysconfig
-from distutils.command.build import build as DistutilsBuild
-from setuptools import setup, Extension
+from distutils.command.build_ext import build_ext as DistutilsBuild
+from setuptools import setup
 
 def build_common(dynamic_library_extension):
     python_include = sysconfig.get_python_inc()
@@ -68,7 +68,7 @@ setup(name='doom-py',
       author='OpenAI Community',
       author_email='gym@openai.com',
       packages=['doom_py'],
-      cmdclass={'build': BuildDoom},
+      cmdclass={'build_ext': BuildDoom},
       setup_requires=['numpy'],
       install_requires=['numpy'],
       tests_require=['nose2'],
