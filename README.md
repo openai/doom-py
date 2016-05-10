@@ -15,6 +15,10 @@ ViZDoom source code.
 * SDL 2.0.2
 * Python with Numpy
 
+To install dependencies on OS X via Brew, type
+
+```brew install cmake boost boost-python```
+
 To install dependencies on Ubuntu, type
 
 ```apt-get install -y python-numpy cmake zlib1g-dev libjpeg-dev libboost-all-dev gcc libsdl2-dev wget unzip```
