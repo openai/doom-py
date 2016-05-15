@@ -17,7 +17,7 @@ ViZDoom source code.
 
 To install dependencies on OS X via Brew, type
 
-```brew install cmake boost boost-python```
+```brew install cmake boost boost-python sdl2```
 
 To install dependencies on Ubuntu, type
 

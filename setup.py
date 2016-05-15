@@ -7,20 +7,21 @@ from distutils import sysconfig
 from distutils.command.build_ext import build_ext as DistutilsBuild
 from setuptools import setup
 
-def build_common(dynamic_library_extension):
+def build_common(dynamic_library_extension, cmake_arg_list=None):
     python_include = sysconfig.get_python_inc()
     python_library = os.path.join(sysconfig.get_config_var('LIBPL'), 'libpython{}.{}'.format(sysconfig.get_python_version(), dynamic_library_extension))
     assert os.path.exists(python_library), "Incorrectly inferred your Python dynamic library would be at {}. This indicates a bug in doom-py and should be reported.".format(python_library)
 
     cores_to_use = max(1, multiprocessing.cpu_count() - 1)
 
-    subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_PYTHON=ON', '-DBUILD_JAVA=OFF', '-DPYTHON_INCLUDE_DIR={}'.format(python_include), '-DPYTHON_LIBRARY={}'.format(python_library)], cwd='doom_py')
+    cmake_arg_list = cmake_arg_list if cmake_arg_list is not None else []
+    subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_PYTHON=ON', '-DBUILD_JAVA=OFF', '-DPYTHON_INCLUDE_DIR={}'.format(python_include), '-DPYTHON_LIBRARY={}'.format(python_library)] + cmake_arg_list, cwd='doom_py')
     subprocess.check_call(['make', '-j', str(cores_to_use)], cwd='doom_py')
     subprocess.check_call(['rm', '-f', 'vizdoom.so'], cwd='doom_py')
     subprocess.check_call(['ln', '-s', 'bin/python/vizdoom.so', 'vizdoom.so'], cwd='doom_py')
 
 def build_osx():
-    build_common('dylib')
+    build_common('dylib', cmake_arg_list=['-DOSX_COCOA_BACKEND=OFF'])
 
     # Symlink to the correct vizdoom binary
     subprocess.check_call(['rm', '-f', 'bin/vizdoom'], cwd='doom_py')
@@ -50,7 +51,7 @@ class BuildDoom(DistutilsBuild):
             build_func()
         except subprocess.CalledProcessError as e:
             if platname == 'osx':
-                library_str = "doom_py requires boost and boost-python on OSX (installable via 'brew install boost boost-python')"
+                library_str = "doom_py requires boost, boost-python, sdl2 on OSX (installable via 'brew install boost boost-python sdl2')"
             elif platname == 'linux':
                 library_str = "Try running 'apt-get install -y python-numpy cmake zlib1g-dev libjpeg-dev libboost-all-dev gcc libsdl2-dev wget unzip'"
             else:
