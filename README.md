@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/openai/doom-py.svg?branch=master)](https://travis-ci.org/openai/doom-py)
 
 Python wrappers for [ViZDoom](http://vizdoom.cs.put.edu.pl/).
-Contains a modified version of the [bleeding-edge](https://github.com/Marqt/ViZDoom/tree/5749d0a49dc6679cc7583b86e5c1861163644c39)
+Contains a modified version of the [bleeding-edge](https://github.com/Marqt/ViZDoom/tree/54a1091830aa08b3afc8e811dbb4f8947bb20bce)
 ViZDoom source code.
 
 ###Requirements
