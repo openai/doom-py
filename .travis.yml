@@ -1,0 +1,24 @@
+dist: trusty
+sudo: required
+cache:
+  apt: true
+language: python
+addons:
+  apt:
+    packages:
+    - cmake
+    - python-dev
+    - python-numpy
+    - libboost-all-dev
+    - libsdl2-dev
+    - libjpeg-dev
+    - zlib1g-dev
+python:
+- '2.7'
+- '3.5'
+install: pip install tox-travis
+script: tox
+notifications:
+  slack:
+    secure: g18pf9/ZT3uvHhUUx3PqTtSY8P6c5BBcKoexGPmusPBJhpqFx10Adi21XUI3aKKwso4hu+4xxzZyVZtkCX1AvBc9WV1TZTTMDkg2TpWimSTS/h2psHrahFyNfFZHFQkJJ5+VdUJ2WPxd6ih4B4hHKmK7xYcGD8fFvXTMKDcbrRtITEvBiIxz9THM8LYEzgdumwSZUwj4XlXlUbKs8COFHV3ALTA7ewJYpBEQnGU8xiNx2bvTlIEYTSHWduBwpArNPYtOm5n/eETGgM+qiooTJ/p9LK09BBXKw5unP22xUiWRAza0ffzg5BJ/O1cKOXcmNvBTnIDac3lVzW4FxUa4PM+t6ApMkgGi0XJKJzXplHnSg3G8mqKZ2NEKkSyIplrzsiDSTzH6YN1U9o1NwcUiMc1qASeOJ4Rf+FVw5ODRBwRjRjxZRHMZu+1HqLWT8Zt6I3bHnlISyio7VEg1dJ7GXzQoMG85vjdfR1FzDDk7+bTK2pcfUwpMNEoeyu7HEef2GNLaza22bh4i0DYHAjOFu6V+APS7gBooET3cmE65ztn0hJYvOnLfCtH/QMNO21xcLFMeMNjSkkPncsv8uWPP414AYA5flu0YrDZ8s1ibm9eZci/ErmmJ2oHqKqxs8L0ysQt2cyiZImhEQiqQOp0IgBcrh9ha/gIohw+7yrr+poE=
+    on_success: change
