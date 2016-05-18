@@ -1,4 +1,4 @@
-#ViZDoom
+#ViZDoom [![Build Status](https://travis-ci.org/Marqt/ViZDoom.svg?branch=master)](https://travis-ci.org/Marqt/ViZDoom)
 [http://vizdoom.cs.put.edu.pl](http://vizdoom.cs.put.edu.pl)
 
 ViZDoom allows developing AI **bots that play Doom using only the visual information** (the screen buffer). It is primarily intended for research in machine visual learning, and deep reinforcement learning, in particular.
@@ -18,11 +18,15 @@ ViZDoom is based on [ZDoom](https://github.com/rheit/zdoom) to provide the game 
 
 ViZDoom API is **reinforcement learning** friendly (suitable also for learning from demonstration, apprenticeship learning or apprenticeship via inverse reinforcement learning, etc.).
 
-## Planned features (ready in June)
+## Planned Features (June)
 * Lua bindings,
 * Multi-player working in sync mode,
 * Labeling game objects visible in the frame,
 * Time scaling in async mode.
+
+## Cite as
+
+>Michał Kempka, Marek Wydmuch, Grzegorz Runc, Jakub Toczek & Wojciech Jaśkowski, ViZDoom: A Doom-based AI Research Platform for Visual Reinforcement Learning, 2016	([arXiv:1605.02097](http://arxiv.org/abs/1605.02097))
 
 ---
 ## Building
@@ -33,7 +37,7 @@ ViZDoom API is **reinforcement learning** friendly (suitable also for learning f
 * CMake 3.0+
 * Make
 * GCC 4.6+
-* Boost libraires
+* Boost libraries
 * Python 2.7+ with Numpy and Boost.Python for Python binding (optional)
 * JDK for Java binding (JAVA_HOME must be set) (optional)
 
@@ -50,12 +54,12 @@ make
 
 ###Windows
 
-We are providing compiled runtime binaries and development libraries for Windows [here](https://github.com/Marqt/ViZDoom/releases/download/1.0.0/ViZDoom-1.0.0-Win-x86_64.zip).
+We are providing compiled runtime binaries and development libraries for Windows [here](https://github.com/Marqt/ViZDoom/releases/download/1.0.1/ViZDoom-1.0.2-Win-x86_64.zip).
 
 ####Dependencies
 * CMake 3.0+
 * Visual Studio 2012+
-* Boost libraires
+* Boost libraries
 * Python 2.7+ with Numpy and Boost.Python for Python binding (optional)
 * JDK for Java binding (JAVA_HOME must be set) (optional)
 
@@ -82,7 +86,7 @@ Let us know if You are using ViZDoom on OSX.
 ####Dependencies
 * CMake 3.0+
 * XCode 5+
-* Boost libraires
+* Boost libraries
 * Python 2.7+ with Numpy and Boost.Python for Python binding (optional)
 * JDK for Java binding (JAVA_HOME must be set) (optional)
 
@@ -92,7 +96,7 @@ Additionally, [ZDoom dependencies](http://zdoom.org/wiki/Compile_ZDoom_on_Mac_OS
 Run CMake and use generated project.
 
 Users with brew-installed Python may need to manually set:
-``-DPYTHON_INCLUDE_DIR=/usr/local/Cellar/python/2.x.x/Frameworks/Python.framework/Versions/2.7/include`` and 
+``-DPYTHON_INCLUDE_DIR=/usr/local/Cellar/python/2.x.x/Frameworks/Python.framework/Versions/2.7/include/python2.7`` and 
 ``-DPYTHON_LIBRARY=/usr/local/Cellar/python/2.x.x/Frameworks/Python.framework/Versions/2.7/lib/libpython2.7.dylib``
 
 ####Configuration
@@ -109,6 +113,13 @@ Compilation output will be placed in ``vizdoom_root_dir/bin`` and it should cont
 * ``bin/python/vizdoom.so (vizdoom.pyd)`` - ViZDoom Python module
 * ``bin/java/libvizdoom.so (vizdoom.dll)`` -  ViZDoom library for Java
 * ``bin/java/vizdoom.jar`` -  Contains ViZDoom Java classes
+
+## Docker
+
+* [Dockerfile](https://github.com/maciejjaskowski/ViZDoom-docker)
+* [Docker image](https://hub.docker.com/r/mjaskowski/vizdoom/)
+
+Note: third-party maintained
 
 ---
 ##Examples
