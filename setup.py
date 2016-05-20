@@ -22,7 +22,7 @@ def build_common(dynamic_library_extension, cmake_arg_list=None):
     cores_to_use = max(1, multiprocessing.cpu_count() - 1)
 
     cmake_arg_list = cmake_arg_list if cmake_arg_list is not None else []
-    subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_PYTHON=ON', '-DBUILD_JAVA=OFF', '-DPYTHON_INCLUDE_DIR={}'.format(python_include), '-DPYTHON_LIBRARY={}'.format(python_library), '-DPYTHON_EXECUTABLE:FILEPATH={}'.format(sys.executable)] + cmake_arg_list, cwd='doom_py')
+    subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_PYTHON=ON', '-DBUILD_JAVA=OFF', '-DPYTHON_EXECUTABLE:FILEPATH={}'.format(sys.executable)] + cmake_arg_list, cwd='doom_py')
     subprocess.check_call(['make', '-j', str(cores_to_use)], cwd='doom_py')
     subprocess.check_call(['rm', '-f', 'vizdoom.so'], cwd='doom_py')
     subprocess.check_call(['ln', '-s', 'bin/python/vizdoom.so', 'vizdoom.so'], cwd='doom_py')
