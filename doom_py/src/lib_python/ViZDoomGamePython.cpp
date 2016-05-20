@@ -31,8 +31,6 @@ namespace vizdoom {
     #define PY_NONE object()
 
     DoomGamePython::DoomGamePython() {
-        boost::python::numeric::array::set_module_and_type("numpy", "ndarray");
-        import_array(); 
     }
 
     bool DoomGamePython::init() {
@@ -42,7 +40,7 @@ namespace vizdoom {
             int channels = this->getScreenChannels();
             int x = this->getScreenWidth();
             int y = this->getScreenHeight();
-            
+
             switch(this->getScreenFormat()) {
                 case CRCGCB:
                 case CRCGCBDB:
@@ -82,7 +80,7 @@ namespace vizdoom {
     }
 
     double DoomGamePython::makeAction(boost::python::list const &action, unsigned int tics) {
-        return DoomGame::makeAction(DoomGamePython::pyListToIntVector(action), tics);   
+        return DoomGame::makeAction(DoomGamePython::pyListToIntVector(action), tics);
     }
 
     GameStatePython DoomGamePython::getState() {
@@ -112,7 +110,7 @@ namespace vizdoom {
         boost::python::list res;
         for (std::vector<int>::iterator it = DoomGame::lastAction.begin(); it!=DoomGame::lastAction.end(); ++it)
         {
-            res.append(*it); 
+            res.append(*it);
         }
         return res;
     }
