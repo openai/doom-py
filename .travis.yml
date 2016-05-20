@@ -11,7 +11,7 @@ addons:
     packages:
     - cmake
     - python-dev
-    - python35-dev
+    - python3.5-dev
     - python-numpy
     - libboost-all-dev
     - libsdl2-dev
