@@ -77,7 +77,7 @@ class BuildExtFirst(install):
         return install.run(self)
 
 setup(name='doom-py',
-      version='0.0.6',
+      version='0.0.7',
       description='Python bindings to ViZDoom',
       url='https://github.com/openai/doom-py',
       author='OpenAI Community',
