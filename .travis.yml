@@ -11,7 +11,7 @@ addons:
     packages:
     - cmake
     - python-dev
-    - python3.5-dev
+    - python3-dev
     - python-numpy
     - libboost-all-dev
     - libsdl2-dev
@@ -19,7 +19,7 @@ addons:
     - zlib1g-dev
 python:
 - '2.7'
-- '3.5'
+- '3.4'
 install: pip install tox-travis
 script: tox
 notifications:

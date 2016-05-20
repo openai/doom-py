@@ -8,21 +8,20 @@ from distutils.command.build import build as DistutilsBuild
 from setuptools import setup
 
 def build_common(dynamic_library_extension, cmake_arg_list=None):
-    python_include = sysconfig.get_python_inc()
-
     def find_python_library():
         for var in ['LIBPL', 'LIBDIR']:
             python_library = os.path.join(sysconfig.get_config_var(var), 'libpython{}.{}'.format(sysconfig.get_python_version(), dynamic_library_extension))
             if os.path.exists(python_library):
                 return python_library
 
-    python_library = find_python_library()  # will be None if not found
-    assert python_library, "Incorrectly inferred your Python dynamic library would be at {}. This indicates a bug in doom-py and should be reported.".format(python_library)
+    python_library = find_python_library()
 
     cores_to_use = max(1, multiprocessing.cpu_count() - 1)
 
     cmake_arg_list = cmake_arg_list if cmake_arg_list is not None else []
-    subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_PYTHON=ON', '-DBUILD_JAVA=OFF', '-DPYTHON_INCLUDE_DIR={}'.format(python_include), '-DPYTHON_LIBRARY={}'.format(python_library), '-DPYTHON_EXECUTABLE:FILEPATH={}'.format(sys.executable)] + cmake_arg_list, cwd='doom_py')
+    if python_library is not None:
+        cmake_arg_list.append('-DPYTHON_LIBRARY={}'.format(python_library))
+    subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_PYTHON=ON', '-DBUILD_JAVA=OFF', '-DPYTHON_EXECUTABLE:FILEPATH={}'.format(sys.executable)] + cmake_arg_list, cwd='doom_py')
     subprocess.check_call(['make', '-j', str(cores_to_use)], cwd='doom_py')
     subprocess.check_call(['rm', '-f', 'vizdoom.so'], cwd='doom_py')
     subprocess.check_call(['ln', '-s', 'bin/python/vizdoom.so', 'vizdoom.so'], cwd='doom_py')
@@ -69,7 +68,7 @@ class BuildDoom(DistutilsBuild):
         DistutilsBuild.run(self)
 
 setup(name='doom-py',
-      version='0.0.9',
+      version='0.0.10',
       description='Python bindings to ViZDoom',
       url='https://github.com/openai/doom-py',
       author='OpenAI Community',
