@@ -111,12 +111,12 @@ if(BUILD_PYTHON)
         find_package(PythonInterp 2.7 REQUIRED)
         if("${PYTHON_VERSION_STRING}" VERSION_LESS "3.0.0")
             # Make sure we use consistent versions of interp and lib
-            find_package(PythonLibs 2.7)
+            find_package(PythonLibs 2.7 REQUIRED)
             # find boost
             find_package(Boost COMPONENTS python REQUIRED)
             set(found_boost_python_library ${Boost_LIBRARIES})
         else()
-            find_package(PythonLibs 3.0)
+            find_package(PythonLibs 3.0 REQUIRED)
 
             # Find the matching boost python implementation by starting with
             # PYTHONLIBS_VERSION_STRING (e.g. 3.4.3), stripping off the last part of the
@@ -147,7 +147,7 @@ if(BUILD_PYTHON)
 
         find_package(NumPy REQUIRED)
 
-	set(VIZDOOM_PYTHON_S_DIR ${VIZDOOM_SRC_DIR}/lib_python)
+	set(VIZDOOM_PYTHON_SRC_DIR ${VIZDOOM_SRC_DIR}/lib_python)
 	set(VIZDOOM_PYTHON_INCLUDE_DIR ${VIZDOOM_INCLUDE_DIR} ${VIZDOOM_PYTHON_SRC_DIR})
 
 	set(VIZDOOM_PYTHON_LIBS
