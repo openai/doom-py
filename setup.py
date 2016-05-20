@@ -4,9 +4,8 @@ import sys
 import subprocess
 
 from distutils import sysconfig
-from distutils.command.build_ext import build_ext as DistutilsBuild
+from distutils.command.build import build as DistutilsBuild
 from setuptools import setup
-from setuptools.command.install import install
 
 def build_common(dynamic_library_extension, cmake_arg_list=None):
     python_include = sysconfig.get_python_inc()
@@ -69,13 +68,6 @@ class BuildDoom(DistutilsBuild):
             raise
         DistutilsBuild.run(self)
 
-class BuildExtFirst(install):
-    def run(self):
-        # Since we don't specify ext modules in the setup call below build_ext
-        # will not get called for setup.py install
-        self.run_command('build_ext')
-        return install.run(self)
-
 setup(name='doom-py',
       version='0.0.7',
       description='Python bindings to ViZDoom',
@@ -83,7 +75,7 @@ setup(name='doom-py',
       author='OpenAI Community',
       author_email='gym@openai.com',
       packages=['doom_py'],
-      cmdclass={'build_ext': BuildDoom, 'install': BuildExtFirst},
+      cmdclass={'build': BuildDoom},
       setup_requires=['numpy'],
       install_requires=['numpy'],
       tests_require=['nose2'],
