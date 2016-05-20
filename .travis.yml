@@ -5,9 +5,13 @@ cache:
 language: python
 addons:
   apt:
+    sources:
+      - george-edison55-precise-backports # cmake 3.2.3
+      - deadsnakes
     packages:
     - cmake
     - python-dev
+    - python35-dev
     - python-numpy
     - libboost-all-dev
     - libsdl2-dev
