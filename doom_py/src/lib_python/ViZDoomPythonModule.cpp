@@ -87,6 +87,7 @@ void
 #endif
 init_numpy()
 {
+    bp::numeric::array::set_module_and_type("numpy", "ndarray");
     import_array();
 }
 
@@ -95,7 +96,6 @@ BOOST_PYTHON_MODULE(vizdoom)
     using namespace boost::python;
 
     Py_Initialize();
-    bp::numeric::array::set_module_and_type("numpy", "ndarray");
     init_numpy();
 
     /* exceptions */

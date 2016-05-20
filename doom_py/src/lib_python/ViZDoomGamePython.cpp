@@ -30,7 +30,20 @@ namespace vizdoom {
 
     #define PY_NONE object()
 
+    #if PY_MAJOR_VERSION >= 3
+    int
+    #else
+    void
+    #endif
+    init_numpy()
+    {
+        boost::python::numeric::array::set_module_and_type("numpy", "ndarray");
+        import_array();
+    }
+
+
     DoomGamePython::DoomGamePython() {
+        init_numpy();
     }
 
     bool DoomGamePython::init() {
