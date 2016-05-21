@@ -109,41 +109,32 @@ if(BUILD_PYTHON)
 	#set(Boost_USE_DEBUG_PYTHON OFF)
 
         find_package(PythonInterp 2.7 REQUIRED)
-        if("${PYTHON_VERSION_STRING}" VERSION_LESS "3.0.0")
-            # Make sure we use consistent versions of interp and lib
-            find_package(PythonLibs 2.7 REQUIRED)
-            # find boost
-            find_package(Boost COMPONENTS python REQUIRED)
-            set(found_boost_python_library ${Boost_LIBRARIES})
-        else()
-            find_package(PythonLibs 3.0 REQUIRED)
+        find_package(PythonLibs ${PYTHON_VERSION_STRING} REQUIRED)
 
-            # Find the matching boost python implementation by starting with
-            # PYTHONLIBS_VERSION_STRING (e.g. 3.4.3), stripping off the last part of the
-            # version, and checking for a boost of that version
-            set(version ${PYTHONLIBS_VERSION_STRING})
-            STRING( REGEX REPLACE "[^0-9]" "" boost_py_version ${version} )
-            find_package(Boost COMPONENTS "python-py${boost_py_version}")
-            set(Boost_PYTHON_FOUND ${Boost_PYTHON-PY${boost_py_version}_FOUND})
+	# Find the matching boost python implementation by starting with
+	# PYTHONLIBS_VERSION_STRING (e.g. 3.4.3), stripping off the last part of the
+	# version, and checking for a boost of that version
+	set(version ${PYTHONLIBS_VERSION_STRING})
+	STRING( REGEX REPLACE "[^0-9]" "" boost_py_version ${version} )
+	find_package(Boost COMPONENTS "python-py${boost_py_version}")
+	set(Boost_PYTHON_FOUND ${Boost_PYTHON-PY${boost_py_version}_FOUND})
 
-            while(NOT "${version}" STREQUAL "" AND NOT Boost_PYTHON_FOUND)
-              STRING( REGEX REPLACE "([0-9.]+).[0-9]+" "\\1" version ${version} )
+	while(NOT "${version}" STREQUAL "" AND NOT Boost_PYTHON_FOUND)
+	  STRING( REGEX REPLACE "([0-9.]+).[0-9]+" "\\1" version ${version} )
 
-              STRING( REGEX REPLACE "[^0-9]" "" boost_py_version ${version} )
-              find_package(Boost COMPONENTS "python-py${boost_py_version}")
-              set(Boost_PYTHON_FOUND ${Boost_PYTHON-PY${boost_py_version}_FOUND})
+	  STRING( REGEX REPLACE "[^0-9]" "" boost_py_version ${version} )
+	  find_package(Boost COMPONENTS "python-py${boost_py_version}")
+	  set(Boost_PYTHON_FOUND ${Boost_PYTHON-PY${boost_py_version}_FOUND})
 
-              STRING( REGEX MATCHALL "([0-9.]+).[0-9]+" has_more_version ${version} )
-              if("${has_more_version}" STREQUAL "")
-                break()
-              endif()
-            endwhile()
-            if(NOT Boost_PYTHON_FOUND)
-              find_package(Boost COMPONENTS python REQUIRED)
-            endif()
-
-            set(found_boost_python_library ${Boost_LIBRARIES})
-        endif()
+	  STRING( REGEX MATCHALL "([0-9.]+).[0-9]+" has_more_version ${version} )
+	  if("${has_more_version}" STREQUAL "")
+	    break()
+	  endif()
+	endwhile()
+	if(NOT Boost_PYTHON_FOUND)
+	  find_package(Boost COMPONENTS python REQUIRED)
+	endif()
+	set(found_boost_python_library ${Boost_LIBRARIES})
 
         find_package(NumPy REQUIRED)
 
