@@ -109,7 +109,10 @@ if(BUILD_PYTHON)
 	#set(Boost_USE_DEBUG_PYTHON OFF)
 
         find_package(PythonInterp 2.7 REQUIRED)
-        find_package(PythonLibs ${PYTHON_VERSION_STRING} REQUIRED)
+	# Find the matching Python libs by starting with PYTHON_VERSION_STRING
+	# and stripping off the least significant digit (e.g. 3.4.3 -> 3.4)
+	STRING( REGEX REPLACE "([0-9.]+)\\.[0-9]+" "\\1" python_version ${PYTHON_VERSION_STRING} )
+        find_package(PythonLibs ${python_version} REQUIRED)
 
 	# Find the matching boost python implementation by starting with
 	# PYTHONLIBS_VERSION_STRING (e.g. 3.4.3), stripping off the last part of the
