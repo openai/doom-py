@@ -126,8 +126,17 @@ if(BUILD_PYTHON)
 	  STRING( REGEX REPLACE "([0-9.]+).[0-9]+" "\\1" version ${version} )
 
 	  STRING( REGEX REPLACE "[^0-9]" "" boost_py_version ${version} )
-	  find_package(Boost COMPONENTS "python-py${boost_py_version}")
-	  set(Boost_PYTHON_FOUND ${Boost_PYTHON-PY${boost_py_version}_FOUND})
+
+          if(NOT Boost_PYTHON_FOUND)
+            find_package(Boost COMPONENTS "python-py${boost_py_version}")
+            set(Boost_PYTHON_FOUND ${Boost_PYTHON-PY${boost_py_version}_FOUND})
+          endif()
+
+          if(NOT Boost_PYTHON_FOUND)
+            # On Mac package is named libboost-python3 instead of libboost-python-py3.5
+            find_package(Boost COMPONENTS "python${boost_py_version}")
+            set(Boost_PYTHON_FOUND ${Boost_PYTHON${boost_py_version}_FOUND})
+          endif()
 
 	  STRING( REGEX MATCHALL "([0-9.]+).[0-9]+" has_more_version ${version} )
 	  if("${has_more_version}" STREQUAL "")
