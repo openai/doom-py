@@ -21,7 +21,16 @@ def build_common(dynamic_library_extension, cmake_arg_list=None):
     cmake_arg_list = cmake_arg_list if cmake_arg_list is not None else []
     if python_library is not None:
         cmake_arg_list.append('-DPYTHON_LIBRARY={}'.format(python_library))
-    subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_PYTHON=ON', '-DBUILD_JAVA=OFF', '-DPYTHON_EXECUTABLE:FILEPATH={}'.format(sys.executable)] + cmake_arg_list, cwd='doom_py')
+
+    # Python 3
+    if sys.version_info >= (3,0):
+        cmake_arg_list.append('-DBUILD_PYTHON=OFF')
+        cmake_arg_list.append('-DBUILD_PYTHON3=ON')
+    else:
+        cmake_arg_list.append('-DBUILD_PYTHON=ON')
+        cmake_arg_list.append('-DBUILD_PYTHON3=OFF')
+
+    subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_JAVA=OFF', '-DPYTHON_EXECUTABLE:FILEPATH={}'.format(sys.executable)] + cmake_arg_list, cwd='doom_py')
     subprocess.check_call(['make', '-j', str(cores_to_use)], cwd='doom_py')
     subprocess.check_call(['rm', '-f', 'vizdoom.so'], cwd='doom_py')
     subprocess.check_call(['ln', '-s', 'bin/python/vizdoom.so', 'vizdoom.so'], cwd='doom_py')
