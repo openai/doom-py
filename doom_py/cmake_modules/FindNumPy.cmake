@@ -63,15 +63,23 @@ if (NOT NUMPY_FOUND)
 
     unset (NUMPY_LIBRARIES)
 
-    if (PYTHON_SITE_PACKAGES)
-        find_library (NUMPY_NPYMATH_LIBRARY npymath
-            HINTS ${PYTHON_SITE_PACKAGES}/numpy/core
-            PATH_SUFFIXES lib
+    if (PYTHON_EXECUTABLE)
+        execute_process (
+            COMMAND ${PYTHON_EXECUTABLE} -c import\ numpy\;\ import\ os\;\ print\(os.path.dirname\(numpy.get_include\(\)\)\)\;
+            ERROR_VARIABLE NUMPY_LIB_DIR_ERROR
+            RESULT_VARIABLE NUMPY_LIB_DIR_RESULT
+            OUTPUT_VARIABLE NUMPY_LIB_DIR
+            OUTPUT_STRIP_TRAILING_WHITESPACE
             )
-        if (NUMPY_NPYMATH_LIBRARY)
-            list (APPEND NUMPY_LIBRARIES ${NUMPY_NPYMATH_LIBRARY})
-        endif (NUMPY_NPYMATH_LIBRARY)
-    endif (PYTHON_SITE_PACKAGES)
+    endif (PYTHON_EXECUTABLE)
+
+    find_library (NUMPY_NPYMATH_LIBRARY npymath
+        HINTS ${NUMPY_LIB_DIR}
+        PATH_SUFFIXES lib
+        )
+    if (NUMPY_NPYMATH_LIBRARY)
+        list (APPEND NUMPY_LIBRARIES ${NUMPY_NPYMATH_LIBRARY})
+    endif (NUMPY_NPYMATH_LIBRARY)
 
     ##__________________________________________________________________________
     ## Get API version of NumPy from 'numpy/numpyconfig.h'

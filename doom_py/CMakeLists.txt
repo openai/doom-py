@@ -112,12 +112,14 @@ if(BUILD_PYTHON)
 	# Find the matching Python libs by starting with PYTHON_VERSION_STRING
 	# and stripping off the least significant digit (e.g. 3.4.3 -> 3.4)
 	STRING( REGEX REPLACE "([0-9.]+)\\.[0-9]+" "\\1" python_version ${PYTHON_VERSION_STRING} )
-        find_package(PythonLibs ${python_version} REQUIRED)
+        find_package(PythonLibs ${python_version})
+        message( STATUS "Using python library: " ${PYTHON_LIBRARIES})
+        message( STATUS "Using python include: " ${PYTHON_INCLUDE_DIRS})
 
 	# Find the matching boost python implementation by starting with
 	# PYTHONLIBS_VERSION_STRING (e.g. 3.4.3), stripping off the last part of the
 	# version, and checking for a boost of that version
-	set(version ${PYTHONLIBS_VERSION_STRING})
+	set(version ${PYTHON_VERSION_STRING})
 	STRING( REGEX REPLACE "[^0-9]" "" boost_py_version ${version} )
 	find_package(Boost COMPONENTS "python-py${boost_py_version}")
 	set(Boost_PYTHON_FOUND ${Boost_PYTHON-PY${boost_py_version}_FOUND})
@@ -130,12 +132,14 @@ if(BUILD_PYTHON)
           if(NOT Boost_PYTHON_FOUND)
             find_package(Boost COMPONENTS "python-py${boost_py_version}")
             set(Boost_PYTHON_FOUND ${Boost_PYTHON-PY${boost_py_version}_FOUND})
+            message( STATUS "Boost library " python-py${boost_py_version} ": " ${Boost_LIBRARIES})
           endif()
 
           if(NOT Boost_PYTHON_FOUND)
             # On Mac package is named libboost-python3 instead of libboost-python-py3.5
             find_package(Boost COMPONENTS "python${boost_py_version}")
             set(Boost_PYTHON_FOUND ${Boost_PYTHON${boost_py_version}_FOUND})
+            message( STATUS "Boost library " python${boost_py_version} ": " ${Boost_LIBRARIES})
           endif()
 
 	  STRING( REGEX MATCHALL "([0-9.]+).[0-9]+" has_more_version ${version} )

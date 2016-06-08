@@ -8,19 +8,23 @@ from distutils.command.build import build as DistutilsBuild
 from setuptools import setup
 
 def build_common(dynamic_library_extension, cmake_arg_list=None):
+    # On OSX CMake's FindPythonLibs is flaky; we need to supply lib and include
+    # dirs otherwise it sometimes fails to pull up the correct versions (see
+    # https://cmake.org/Bug/view.php?id=14809)
     def find_python_library():
         for var in ['LIBPL', 'LIBDIR']:
             python_library = os.path.join(sysconfig.get_config_var(var), 'libpython{}.{}'.format(sysconfig.get_python_version(), dynamic_library_extension))
             if os.path.exists(python_library):
                 return python_library
 
-    python_library = find_python_library()
-
     cores_to_use = max(1, multiprocessing.cpu_count() - 1)
 
     cmake_arg_list = cmake_arg_list if cmake_arg_list is not None else []
+    python_library = find_python_library()
+    python_include = sysconfig.get_python_inc()
     if python_library is not None:
         cmake_arg_list.append('-DPYTHON_LIBRARY={}'.format(python_library))
+        cmake_arg_list.append('-DPYTHON_INCLUDE_DIR={}'.format(python_include))
     subprocess.check_call(['cmake', '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_PYTHON=ON', '-DBUILD_JAVA=OFF', '-DPYTHON_EXECUTABLE:FILEPATH={}'.format(sys.executable)] + cmake_arg_list, cwd='doom_py')
     subprocess.check_call(['make', '-j', str(cores_to_use)], cwd='doom_py')
     subprocess.check_call(['rm', '-f', 'vizdoom.so'], cwd='doom_py')
