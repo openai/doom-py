@@ -50,9 +50,11 @@ if sys.platform.startswith("darwin"):
 elif sys.platform.startswith("linux"):
     platname = "linux"
     build_func = build_linux
-elif sys.platform.startswith("windows"):
+elif sys.platform.startswith("win"):
     platname = "win"
     build_func = build_windows
+else:
+    raise RuntimeError("Unrecognized platform: {}".format(sys.platform))
 
 # For building Doom
 class BuildDoom(DistutilsBuild):
