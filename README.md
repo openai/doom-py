@@ -26,3 +26,11 @@ To run with python3 you may need to run
 To install dependencies on Ubuntu, type
 
 ```apt-get install -y python-numpy cmake zlib1g-dev libjpeg-dev libboost-all-dev gcc libsdl2-dev wget unzip```
+
+
+### Installation
+
+```
+python setup.py build
+pip install -e .
+```
