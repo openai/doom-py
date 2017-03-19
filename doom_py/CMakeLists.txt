@@ -105,7 +105,8 @@ set_target_properties(libvizdoom_static libvizdoom_shared
 	add_subdirectory(${VIZDOOM_SRC_DIR}/vizdoom)
 
 if(BUILD_PYTHON)
-
+	include(FindPythonAnaconda)
+	# set(Python_ADDITIONAL_VERSIONS 3.5)
 	#set(Boost_USE_DEBUG_PYTHON OFF)
 
         find_package(PythonInterp 2.7 REQUIRED)
