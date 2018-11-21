@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/openai/doom-py.svg?branch=master)](https://travis-ci.org/openai/doom-py)
 
+DEPRECATED, please use the official [ViZDoom python bindings](http://vizdoom.cs.put.edu.pl/) instead.
+
 Python wrappers for [ViZDoom](http://vizdoom.cs.put.edu.pl/).
 Contains a modified version of the [bleeding-edge](https://github.com/Marqt/ViZDoom/tree/54a1091830aa08b3afc8e811dbb4f8947bb20bce)
 ViZDoom source code.
